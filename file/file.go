@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func Copy(srcFile, dstFile string) error {
+func Copy(srcFile, dstFile string, ids ...int) error {
 	b, err := ioutil.ReadFile(srcFile)
 	if err != nil {
 		fmt.Println(err)
@@ -24,8 +24,12 @@ func Copy(srcFile, dstFile string) error {
 		return err
 	}
 
-	// TODO
-	os.Chown(dstFile, 0, 0)
+	if 2 <= len(ids) {
+		uid := ids[0]
+		gid := ids[1]
+		os.Chown(dstFile, uid, gid)
+	}
+
 	return nil
 }
 
