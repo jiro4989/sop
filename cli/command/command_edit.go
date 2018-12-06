@@ -3,6 +3,7 @@ package command
 import (
 	"fmt"
 	"log"
+	"os/exec"
 
 	"github.com/spf13/cobra"
 )
@@ -12,12 +13,10 @@ var editCommand = &cobra.Command{
 	Short: "edit",
 	Long:  "edit",
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1 {
+		if len(args) < 2 {
 			log.Println("need 1 args.")
 			return
 		}
-
-		editor := args[0]
 
 		// if err := file.Backup(srcFile); err != nil {
 		// 	msg := fmt.Sprintf("failed backup. err=%s", err)
@@ -25,7 +24,14 @@ var editCommand = &cobra.Command{
 		// 	return
 		// }
 
-		fmt.Println(editor)
+		editor := args[0]
+		srcFile := args[1]
+		cmd := fmt.Sprintf("%s %s", editor, srcFile)
+		if err := exec.Command(cmd).Run(); err != nil {
+			log.Println("failed")
+			return
+		}
+
 	},
 }
 
