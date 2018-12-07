@@ -37,7 +37,4 @@ var rmCommand = &cobra.Command{
 
 func init() {
 	RootCommand.AddCommand(rmCommand)
-	rmCommand.Flags().StringP("owner", "o", "", "owner of remote file")
-	rmCommand.Flags().StringP("group", "g", "", "group of remote file")
-	rmCommand.Flags().StringP("mode", "m", "", "mode of remote file")
 }
