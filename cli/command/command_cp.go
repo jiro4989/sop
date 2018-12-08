@@ -50,7 +50,7 @@ var cpCommand = &cobra.Command{
 			return
 		}
 
-		if err := file.CopyByName(srcFile, dstFile, owner, group, mode); err != nil {
+		if err := file.Copy(srcFile, dstFile, owner, group, mode); err != nil {
 			msg := fmt.Sprintf("failed copy. err=%s", err)
 			log.Println(msg)
 			return

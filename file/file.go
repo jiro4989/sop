@@ -11,10 +11,6 @@ import (
 	"time"
 )
 
-func Copy(srcFile, dstFile string, ids ...int) error {
-	return cp(srcFile, dstFile, -1, -1)
-}
-
 func cp(srcFile, dstFile string, uid, gid int, m ...os.FileMode) error {
 	b, err := ioutil.ReadFile(srcFile)
 	if err != nil {
@@ -53,7 +49,7 @@ func cp(srcFile, dstFile string, uid, gid int, m ...os.FileMode) error {
 	return nil
 }
 
-func CopyByName(srcFile, dstFile, owner, group, mode string) error {
+func Copy(srcFile, dstFile, owner, group, mode string) error {
 	var (
 		uid int
 		gid int
