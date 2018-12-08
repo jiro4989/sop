@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/user"
 	"strconv"
+	"syscall"
 	"time"
 )
 
@@ -102,12 +103,24 @@ func CopyByName(srcFile, dstFile, owner, group, mode string) error {
 }
 
 func Backup(srcFile string) error {
+	var (
+		fi  os.FileInfo
+		err error
+	)
 	// ファイルの有無判定。存在しなければ終了
-	if _, err := os.Stat(srcFile); err != nil {
+	fi, err = os.Stat(srcFile)
+	if err != nil {
 		return nil
 	}
-	// TODO
+
+	var (
+		sys = fi.Sys()
+		uid = sys.(*syscall.Stat_t).Uid
+		gid = sys.(*syscall.Stat_t).Gid
+		m   = fi.Mode()
+	)
+
 	now := time.Now().Format("2006-01-02_150405")
 	dstFile := fmt.Sprintf("%s.%s", srcFile, now)
-	return Copy(srcFile, dstFile)
+	return cp(srcFile, dstFile, int(uid), int(gid), m)
 }
