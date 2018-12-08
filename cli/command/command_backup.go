@@ -10,8 +10,10 @@ import (
 
 var backupCommand = &cobra.Command{
 	Use:   "backup",
-	Short: "backup copies file to remote server",
-	Long:  "backup copies file to remote server",
+	Short: "backup copy file as backup.",
+	Long: `backup copy file as backup.
+backuped file has owner, group and permission of srcfile.
+backuped file has dateext.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			log.Println("need 1 args.")
