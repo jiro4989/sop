@@ -53,47 +53,46 @@ func cp(srcFile, dstFile string, uid, gid int, m ...os.FileMode) error {
 }
 
 func CopyByName(srcFile, dstFile, owner, group, mode string) error {
-	if owner == "" || group == "" {
-		uid := -1
-		gid := -1
+	var (
+		uid int
+		gid int
+	)
 
-		var m uint64
-		var err error
-		m, err = strconv.ParseUint(mode, 10, 32)
+	if owner == "" || group == "" {
+		uid = -1
+		gid = -1
+	} else {
+		u, err := user.Lookup(owner)
 		if err != nil {
 			log.Println(err)
 			return err
 		}
 
-		return cp(srcFile, dstFile, uid, gid, os.FileMode(m))
+		g, err := user.LookupGroup(group)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+
+		uid, err = strconv.Atoi(u.Uid)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+
+		gid, err = strconv.Atoi(g.Gid)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+
 	}
 
-	u, err := user.Lookup(owner)
-	if err != nil {
-		log.Println(err)
-		return err
+	if mode == "" {
+		return cp(srcFile, dstFile, uid, gid)
 	}
 
-	g, err := user.LookupGroup(group)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	uid, err := strconv.Atoi(u.Uid)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	gid, err := strconv.Atoi(g.Gid)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-
-	var m uint64
-	m, err = strconv.ParseUint(mode, 10, 32)
+	m, err := strconv.ParseUint(mode, 10, 32)
 	if err != nil {
 		log.Println(err)
 		return err
