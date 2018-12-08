@@ -11,8 +11,11 @@ import (
 
 var editCommand = &cobra.Command{
 	Use:   "edit",
-	Short: "edit",
-	Long:  "edit",
+	Short: "edit can edit file with your favorite editor, and save backup.",
+	Long: `edit can edit file with your favorite editor, and save backup.
+backuped file has owner, group and permission of srcfile.
+backuped file has dateext.
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Println("start edit. args=", args)
 		if len(args) < 2 {
