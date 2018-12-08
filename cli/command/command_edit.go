@@ -45,7 +45,4 @@ var editCommand = &cobra.Command{
 
 func init() {
 	RootCommand.AddCommand(editCommand)
-	editCommand.Flags().StringP("owner", "o", "", "owner of remote file")
-	editCommand.Flags().StringP("group", "g", "", "group of remote file")
-	editCommand.Flags().StringP("mode", "m", "", "mode of remote file")
 }
