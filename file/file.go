@@ -91,7 +91,7 @@ func Copy(srcFile, dstFile, owner, group, mode string) error {
 		return cp(srcFile, dstFile, uid, gid)
 	}
 
-	m, err := strconv.ParseUint(mode, 10, 32)
+	m, err := strconv.ParseUint(mode, 8, 32)
 	if err != nil {
 		log.Println(err)
 		return err
