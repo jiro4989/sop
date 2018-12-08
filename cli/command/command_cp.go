@@ -28,24 +28,23 @@ var cpCommand = &cobra.Command{
 		)
 
 		// オプション引数取得
-		owner, err = cmd.PersistentFlags().GetString("owner")
+		owner, err = cmd.Flags().GetString("owner")
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		group, err = cmd.PersistentFlags().GetString("group")
+		group, err = cmd.Flags().GetString("group")
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		mode, err = cmd.PersistentFlags().GetString("mode")
+		mode, err = cmd.Flags().GetString("mode")
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		fmt.Println(owner, group, mode)
 
-		if err := file.Backup(srcFile); err != nil {
+		if err := file.Backup(dstFile); err != nil {
 			msg := fmt.Sprintf("failed backup. err=%s", err)
 			log.Println(msg)
 			return
