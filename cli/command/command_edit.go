@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/jiro4989/sop/file"
 	"github.com/spf13/cobra"
 )
 
@@ -19,12 +20,6 @@ var editCommand = &cobra.Command{
 			return
 		}
 
-		// if err := file.Backup(srcFile); err != nil {
-		// 	msg := fmt.Sprintf("failed backup. err=%s", err)
-		// 	log.Info(msg)
-		// 	return
-		// }
-
 		editor := args[0]
 		srcFile := args[1]
 		log.Println("editor=", editor, ", file=", srcFile)
@@ -33,6 +28,11 @@ var editCommand = &cobra.Command{
 		c.Stdout = os.Stdout
 		c.Stderr = os.Stderr
 		c.Stdin = os.Stdin
+
+		if err := file.Backup(srcFile); err != nil {
+			log.Println("failed backup. err=", err)
+			return
+		}
 
 		if err := c.Run(); err != nil {
 			log.Println("failed exec command. editor=", editor, ", srcFile-", srcFile, ", err=", err)
