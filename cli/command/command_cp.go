@@ -18,8 +18,32 @@ var cpCommand = &cobra.Command{
 			return
 		}
 
-		srcFile := args[0]
-		dstFile := args[1]
+		var (
+			srcFile = args[0]
+			dstFile = args[1]
+			owner   string
+			group   string
+			mode    string
+			err     error
+		)
+
+		// オプション引数取得
+		owner, err = cmd.PersistentFlags().GetString("owner")
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		group, err = cmd.PersistentFlags().GetString("group")
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		mode, err = cmd.PersistentFlags().GetString("mode")
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		fmt.Println(owner, group, mode)
 
 		if err := file.Backup(srcFile); err != nil {
 			msg := fmt.Sprintf("failed backup. err=%s", err)
@@ -27,7 +51,7 @@ var cpCommand = &cobra.Command{
 			return
 		}
 
-		if err := file.Copy(srcFile, dstFile); err != nil {
+		if err := file.CopyByName(srcFile, dstFile, owner, group, mode); err != nil {
 			msg := fmt.Sprintf("failed copy. err=%s", err)
 			log.Println(msg)
 			return
