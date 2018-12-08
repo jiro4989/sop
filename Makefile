@@ -4,7 +4,11 @@ SRCS := $(shell find . -name "*.go" -type f )
 LDFLAGS := -ldflags="-s -w \
 	-extldflags \"-static\""
 XBUILD_TARGETS := \
-	-os="windows linux darwin" \
+	-os="linux darwin" \
+	-arch="386 amd64" 
+XBUILD_TARGETS_FOR_WINDOWS := \
+	-tags="windows" \
+	-os="windows" \
 	-arch="386 amd64" 
 DIST_DIR := dist/$(VERSION)
 README := README.md
@@ -26,6 +30,7 @@ install: build ## インストール
 
 xbuild: $(SRCS) bootstrap ## クロスコンパイル
 	gox $(LDFLAGS) $(XBUILD_TARGETS) --output "$(DIST_DIR)/{{.Dir}}_{{.OS}}_{{.Arch}}/{{.Dir}}"
+	gox $(LDFLAGS) $(XBUILD_TARGETS_FOR_WINDOWS) --output "$(DIST_DIR)/{{.Dir}}_{{.OS}}_{{.Arch}}/{{.Dir}}"
 
 archive: xbuild ## クロスコンパイルしたバイナリとREADMEを圧縮する
 	find $(DIST_DIR)/ -mindepth 1 -maxdepth 1 -a -type d \

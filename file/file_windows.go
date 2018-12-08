@@ -1,4 +1,4 @@
-// +build !windows
+// +build windows
 
 package file
 
@@ -9,10 +9,10 @@ import (
 	"os"
 	"os/user"
 	"strconv"
-	"syscall"
 	"time"
 )
 
+// uid, gidはWindows環境では使用しない
 func cp(srcFile, dstFile string, uid, gid int, m ...os.FileMode) error {
 	b, err := ioutil.ReadFile(srcFile)
 	if err != nil {
@@ -30,15 +30,6 @@ func cp(srcFile, dstFile string, uid, gid int, m ...os.FileMode) error {
 	if _, err := dst.Write(b); err != nil {
 		log.Println(err)
 		return err
-	}
-
-	// rootユーザは 0
-	// UID/GIDにマイナス値は使わない
-	if 0 <= uid && 0 <= gid {
-		if err := dst.Chown(uid, gid); err != nil {
-			log.Println(err)
-			// chownはできなくてもしかたないのでreturnしない
-		}
 	}
 
 	if 1 <= len(m) {
@@ -112,9 +103,8 @@ func Backup(srcFile string) error {
 	}
 
 	var (
-		sys = fi.Sys()
-		uid = sys.(*syscall.Stat_t).Uid
-		gid = sys.(*syscall.Stat_t).Gid
+		uid = -1
+		gid = -1
 		m   = fi.Mode()
 	)
 
