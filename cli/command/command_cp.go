@@ -10,8 +10,12 @@ import (
 
 var cpCommand = &cobra.Command{
 	Use:   "cp",
-	Short: "cp copies file to remote server",
-	Long:  "cp copies file to remote server",
+	Short: "cp copies file and save backup file.",
+	Long: `cp copies file and save backup file.
+command flags control owner, group and permission.
+backuped file has owner, group and permission of srcfile.
+backuped file has dateext.
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 2 {
 			log.Println("need 2 args.")
