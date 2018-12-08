@@ -11,8 +11,11 @@ import (
 
 var rmCommand = &cobra.Command{
 	Use:   "rm",
-	Short: "rm",
-	Long:  "rm",
+	Short: "rm removes file and save backup.",
+	Long: `rm removes file and save backup.
+backuped file has owner, group and permission of srcfile.
+backuped file has dateext.
+`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) < 1 {
 			log.Println("need 1 args.")
